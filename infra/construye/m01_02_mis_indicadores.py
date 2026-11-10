@@ -25,10 +25,15 @@ df = df.iloc[::-1]                     # de la más antigua a la más reciente
 print(f"lecturas leídas del histórico: {len(df)}")
 
 # --- PASO 2: la última carcasa y cuánto hace que llegó -------------------------
-# (pega aquí el bloque del paso 2)
+ultima = df.iloc[-1]
+hora = datetime.fromisoformat(ultima["ts"])                    # la hora con la que la guardó el archivador
+antiguedad_s = (datetime.now(timezone.utc) - hora).total_seconds()
+print(f"última carcasa: {ultima['pieza_id']} a {ultima['temperatura_c']} °C, hace {antiguedad_s:.0f} s")
 
 # --- PASO 3: decidir si el dato está vivo --------------------------------------
-# (pega aquí el bloque del paso 3)
+vivo = antiguedad_s <= MAX_ANTIGUEDAD_S
+estado = "VIVO" if vivo else f"CONGELADO (sin datos nuevos desde hace {antiguedad_s:.0f} s)"
+print(f"estado del dato: {estado}")
 
 # --- PASO 4: lecturas fuera de margen ------------------------------------------
 # (pega aquí el bloque del paso 4)
